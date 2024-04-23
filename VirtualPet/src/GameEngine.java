@@ -1,9 +1,13 @@
 import java.util.Scanner;
 
-public class Main {
+public class GameEngine {
+    private Pet pet;
 
-    public static void main(String[] args) {
-        Pet pet = new Pet();
+    public GameEngine(Pet pet) {
+        this.pet = pet;
+    }
+
+    public void start() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to Virtual Pet App!");
@@ -59,6 +63,13 @@ public class Main {
                 default:
                     System.out.println("Invalid choice. Please enter a number between 1 and 4.");
             }
+            pet.update();
         }
+    }
+
+    public static void main(String[] args) {
+        Pet pet = new Pet();
+        GameEngine gameEngine = new GameEngine(pet);
+        gameEngine.start();
     }
 }

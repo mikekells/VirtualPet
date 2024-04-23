@@ -145,6 +145,7 @@ public class Pet {
             hunger = 100;
         }
         gainHappiness();
+        System.out.println(name + " is fed. Hunger decreased.");
     }
 
     public void drink() {
@@ -167,6 +168,18 @@ public class Pet {
         }
     }
 
+    public void update() {
+        hunger += 5;
+        happiness -= 5;
+        if (hunger > 100) {
+            hunger = 100;
+        }
+        if (happiness < 0) {
+            happiness = 0;
+        }
+        System.out.println(name + "'s status updated.");
+    }
+
     public void showStatus() {
         System.out.println(name + "'s Stats:");
         System.out.println("Health: " + health);
@@ -177,6 +190,11 @@ public class Pet {
         System.out.println("Sick: " + isSick);
         System.out.println("Needs toilet: " + needsToilet);
         System.out.println("Time Count: " + timeCount);
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Hunger: " + hunger + ", Happiness: " + happiness;
     }
 
     void saveData() {
