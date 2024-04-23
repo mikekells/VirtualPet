@@ -11,6 +11,7 @@ public class Pet {
     private int happiness;
     private boolean needsToilet;
     private boolean isSick;
+    private Timer timer;
     private int timeCount;
 
     private static final String SAVE_FILE_PATH = "virtual_pet_data.txt";
@@ -25,7 +26,6 @@ public class Pet {
         this.needsToilet = false;
         this.isSick = false;
         this.timeCount = 0;
-        startTimer();
     }
 
     public Pet() {
@@ -38,17 +38,23 @@ public class Pet {
         this.needsToilet = false;
         this.isSick = false;
         this.timeCount = 0;
-        startTimer();
     }
 
-    void startTimer() {
-        Timer timer = new Timer();
+    public void startTimer() {
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                    decreaseStatsOverTime();
+                update();
             }
-        }, 1000, 60000);
+        }, 0, 60000);
+    }
+
+    public void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     public String getName() {
@@ -57,13 +63,6 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void decreaseStatsOverTime() {
-        gainHunger();
-        gainThirst();
-        loseHappiness();
-        agePet();
     }
 
     public void agePet() {
@@ -169,14 +168,10 @@ public class Pet {
     }
 
     public void update() {
-        hunger += 5;
-        happiness -= 5;
-        if (hunger > 100) {
-            hunger = 100;
-        }
-        if (happiness < 0) {
-            happiness = 0;
-        }
+        gainHunger();
+        gainThirst();
+        loseHappiness();
+        agePet();
         System.out.println(name + "'s status updated.");
     }
 
