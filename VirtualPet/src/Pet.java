@@ -65,6 +65,41 @@ public class Pet {
         this.name = name;
     }
 
+    public void update() {
+        // A clause to drastically reduce happiness.
+        if(hunger < 50 && thirst < 50){
+            happiness -=  10;
+        }
+
+        gainHunger();
+        gainThirst();
+        loseHappiness();
+        agePet();
+        isAlive();
+        System.out.println(name + "'s status updated.");
+    }
+
+    public boolean isAlive(){
+        boolean result = true;
+
+        if(health < 0) {
+            health = 0;
+        }
+
+        if(health == 0) {
+            result = false;
+            killPet();
+        }
+
+        if(hunger == 0 && thirst == 0) {
+            health -= 30;
+            happiness = 0;
+            System.out.println("Pet is starving...");
+        }
+
+        return result;
+    }
+
     public void agePet() {
         timeCount++;
         if (timeCount >= 5) {
@@ -81,6 +116,7 @@ public class Pet {
 
     public void killPet() {
         File fileToDelete = new File(SAVE_FILE_PATH);
+        System.out.println("Pet DEAD! You are a terrible person!");
         if (fileToDelete.exists()) {
             boolean deleted = fileToDelete.delete();
         }
@@ -165,19 +201,6 @@ public class Pet {
         if (happiness > 100) {
             happiness = 100;
         }
-    }
-
-    public void update() {
-        // A clause to drastically reduce happiness.
-        if(hunger < 50 && thirst < 50){
-            happiness -=  10;
-        }
-
-        gainHunger();
-        gainThirst();
-        loseHappiness();
-        agePet();
-        System.out.println(name + "'s status updated.");
     }
 
     public void showStatus() {
