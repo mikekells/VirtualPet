@@ -65,29 +65,16 @@ public class Pet {
         this.name = name;
     }
 
-    public void update() {
-        // A clause to drastically reduce happiness.
-        if(hunger < 50 && thirst < 50){
-            happiness -=  10;
-        }
-
-        gainHunger();
-        gainThirst();
-        loseHappiness();
-        agePet();
-        isAlive();
-        System.out.println(name + "'s status updated.");
+    public int getHealth() {
+        return health;
     }
 
-    public boolean isAlive(){
-        boolean result = true;
-
+    public void setHealth() {
         if(health < 0) {
             health = 0;
         }
 
         if(health == 0) {
-            result = false;
             killPet();
         }
 
@@ -97,7 +84,87 @@ public class Pet {
             System.out.println("Pet is starving...");
         }
 
-        return result;
+        if(hunger >= 50 && thirst >= 50){
+            health += 10;
+        }
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
+
+    public int getThirst() {
+        return thirst;
+    }
+
+    public void setThirst(int thirst) {
+        this.thirst = thirst;
+    }
+
+    public int getHappiness() {
+        return happiness;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
+    public boolean isNeedsToilet() {
+        return needsToilet;
+    }
+
+    public void setNeedsToilet(boolean needsToilet) {
+        this.needsToilet = needsToilet;
+    }
+
+    public boolean isSick() {
+        return isSick;
+    }
+
+    public void setSick(boolean sick) {
+        isSick = sick;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    public int getTimeCount() {
+        return timeCount;
+    }
+
+    public void setTimeCount(int timeCount) {
+        this.timeCount = timeCount;
+    }
+
+    public void update() {
+        // A clause to drastically reduce happiness.
+        if(hunger < 50 && thirst < 50){
+            happiness -=  10;
+        }
+
+        setHealth();
+        gainHunger();
+        gainThirst();
+        loseHappiness();
+        agePet();
+        System.out.println(name + "'s status updated.");
     }
 
     public void agePet() {
@@ -205,14 +272,14 @@ public class Pet {
 
     public void showStatus() {
         System.out.println(name + "'s Stats:");
-        System.out.println("Health: " + health);
-        System.out.println("Age: " + age);
-        System.out.println("Hunger: " + hunger);
-        System.out.println("Thirst: " + thirst);
-        System.out.println("Happiness: " + happiness);
-        System.out.println("Sick: " + isSick);
-        System.out.println("Needs toilet: " + needsToilet);
-        System.out.println("Time Count: " + timeCount);
+        System.out.println("Health: " + getHealth());
+        System.out.println("Age: " + getAge());
+        System.out.println("Hunger: " + getHunger());
+        System.out.println("Thirst: " + getThirst());
+        System.out.println("Happiness: " + getHappiness());
+        System.out.println("Sick: " + isSick());
+        System.out.println("Needs toilet: " + isNeedsToilet());
+        System.out.println("Time Count: " + getTimeCount());
     }
 
     @Override
