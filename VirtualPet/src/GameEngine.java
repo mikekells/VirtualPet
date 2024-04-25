@@ -61,9 +61,6 @@ public class GameEngine {
                 default:
                     System.out.println("Invalid choice. Please enter a number between 1 and 4.");
             }
-//            System.out.println("\n" + pet);
-//            System.out.println("Your pet has passed away. Game over.");
-//            pet.stopTimer(); // Stop the timer
         }
     }
 

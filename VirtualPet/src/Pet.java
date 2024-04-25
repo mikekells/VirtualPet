@@ -168,6 +168,11 @@ public class Pet {
     }
 
     public void update() {
+        // A clause to drastically reduce happiness.
+        if(hunger < 50 && thirst < 50){
+            happiness -=  10;
+        }
+
         gainHunger();
         gainThirst();
         loseHappiness();
