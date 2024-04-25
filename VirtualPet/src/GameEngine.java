@@ -1,14 +1,16 @@
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class Main {
+public class GameEngine {
+    private Pet pet;
 
-    public static void main(String[] args) {
-        Pet pet = new Pet();
+    public GameEngine(Pet pet) {
+        this.pet = pet;
+    }
+
+    public void start() {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Welcome to Virtual Pet App!");
+        pet.startTimer();
 
         if (pet.checkSaveExists()) {
             pet.loadData();
@@ -35,15 +37,12 @@ public class Main {
             switch (choice) {
                 case 1:
                     pet.feed();
-                    pet.showStatus();
                     break;
                 case 2:
                     pet.drink();
-                    pet.showStatus();
                     break;
                 case 3:
                     pet.play();
-                    pet.showStatus();
                     break;
                 case 4:
                     pet.showStatus();
@@ -57,10 +56,17 @@ public class Main {
                 case 6:
                     System.out.println("Thanks for playing!");
                     pet.saveData();
-                    System.exit(0);
+                    pet.stopTimer();
+                    return;
                 default:
                     System.out.println("Invalid choice. Please enter a number between 1 and 4.");
             }
         }
+    }
+
+    public static void main(String[] args) {
+        Pet pet = new Pet();
+        GameEngine gameEngine = new GameEngine(pet);
+        gameEngine.start();
     }
 }

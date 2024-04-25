@@ -11,6 +11,7 @@ public class Pet {
     private int happiness;
     private boolean needsToilet;
     private boolean isSick;
+    private Timer timer;
     private int timeCount;
 
     private static final String SAVE_FILE_PATH = "virtual_pet_data.txt";
@@ -25,7 +26,6 @@ public class Pet {
         this.needsToilet = false;
         this.isSick = false;
         this.timeCount = 0;
-        startTimer();
     }
 
     public Pet() {
@@ -38,17 +38,23 @@ public class Pet {
         this.needsToilet = false;
         this.isSick = false;
         this.timeCount = 0;
-        startTimer();
     }
 
-    void startTimer() {
-        Timer timer = new Timer();
+    public void startTimer() {
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                    decreaseStatsOverTime();
+                update();
             }
-        }, 1000, 60000);
+        }, 0, 60000);
+    }
+
+    public void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     public String getName() {
@@ -59,11 +65,106 @@ public class Pet {
         this.name = name;
     }
 
-    public void decreaseStatsOverTime() {
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth() {
+        if(health < 0) {
+            health = 0;
+        }
+
+        if(health == 0) {
+            killPet();
+        }
+
+        if(hunger == 0 && thirst == 0) {
+            health -= 30;
+            happiness = 0;
+            System.out.println("Pet is starving...");
+        }
+
+        if(hunger >= 50 && thirst >= 50){
+            health += 10;
+        }
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
+
+    public int getThirst() {
+        return thirst;
+    }
+
+    public void setThirst(int thirst) {
+        this.thirst = thirst;
+    }
+
+    public int getHappiness() {
+        return happiness;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
+    public boolean isNeedsToilet() {
+        return needsToilet;
+    }
+
+    public void setNeedsToilet(boolean needsToilet) {
+        this.needsToilet = needsToilet;
+    }
+
+    public boolean isSick() {
+        return isSick;
+    }
+
+    public void setSick(boolean sick) {
+        isSick = sick;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    public int getTimeCount() {
+        return timeCount;
+    }
+
+    public void setTimeCount(int timeCount) {
+        this.timeCount = timeCount;
+    }
+
+    public void update() {
+        // A clause to drastically reduce happiness.
+        if(hunger < 50 && thirst < 50){
+            happiness -=  10;
+        }
+
+        setHealth();
         gainHunger();
         gainThirst();
         loseHappiness();
         agePet();
+        System.out.println(name + "'s status updated.");
     }
 
     public void agePet() {
@@ -82,6 +183,7 @@ public class Pet {
 
     public void killPet() {
         File fileToDelete = new File(SAVE_FILE_PATH);
+        System.out.println("Pet DEAD! You are a terrible person!");
         if (fileToDelete.exists()) {
             boolean deleted = fileToDelete.delete();
         }
@@ -145,6 +247,7 @@ public class Pet {
             hunger = 100;
         }
         gainHappiness();
+        System.out.println(name + " is fed. Hunger decreased.");
     }
 
     public void drink() {
@@ -169,14 +272,19 @@ public class Pet {
 
     public void showStatus() {
         System.out.println(name + "'s Stats:");
-        System.out.println("Health: " + health);
-        System.out.println("Age: " + age);
-        System.out.println("Hunger: " + hunger);
-        System.out.println("Thirst: " + thirst);
-        System.out.println("Happiness: " + happiness);
-        System.out.println("Sick: " + isSick);
-        System.out.println("Needs toilet: " + needsToilet);
-        System.out.println("Time Count: " + timeCount);
+        System.out.println("Health: " + getHealth());
+        System.out.println("Age: " + getAge());
+        System.out.println("Hunger: " + getHunger());
+        System.out.println("Thirst: " + getThirst());
+        System.out.println("Happiness: " + getHappiness());
+        System.out.println("Sick: " + isSick());
+        System.out.println("Needs toilet: " + isNeedsToilet());
+        System.out.println("Time Count: " + getTimeCount());
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Hunger: " + hunger + ", Happiness: " + happiness;
     }
 
     void saveData() {
